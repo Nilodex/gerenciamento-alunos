@@ -1,0 +1,11 @@
+<mat-card>
+    <mat-card-content>
+        <h1>Informações do aluno</h1>
+        <p><b>Nome:</b> {{this.studentService.getStudentName(Student)}}</p>
+        <p><b>Série:</b> {{Student.serie}}</p>
+        <p><b>Data de Nascimento:</b> {{this.studentService.getStudentBirthdateToString(Student)}}</p>
+        <p><b>Telefone:</b> {{this.studentService.getStudentPhone(Student)}}</p>
+        <button mat-flat-button color="primary" (click)="openEditDialog(Student)">Alterar</button>
+        <button mat-stroked-button color="warn" class="ms-3" (click)="openDeleteDialog(Student)">Excluir Aluno</button>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,25 @@
+<div class="conteudo">
+    <div class="d-flex justify-content-center">
+        <mat-card>
+            <mat-card-title><h1>Login</h1></mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form row-gap-2">
+                    <mat-form-field>
+                        <mat-label>Usuário</mat-label>
+                        <input matInput placeholder="admin" formControlName="username" type="text">
+                        <mat-error *ngIf="loginForm.controls['username'].errors" class="text-danger">Este campo não pode ficar vazio.</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Senha</mat-label>
+                        <input matInput type="password" placeholder="admin" formControlName="password">
+                        <mat-error *ngIf="loginForm.controls['password'].errors" class="text-danger">Este campo não pode ficar vazio.</mat-error>
+                    </mat-form-field>
+                    <button mat-flat-button color="primary" type="submit">Entrar</button>
+                    <span class="text-danger my-2">
+                        {{mensagemLogin}}
+                    </span>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

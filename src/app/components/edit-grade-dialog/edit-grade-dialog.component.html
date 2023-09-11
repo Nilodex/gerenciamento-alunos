@@ -1,0 +1,26 @@
+<form [formGroup]="gradeForm" (ngSubmit)="onSubmit()">
+    <h1 mat-dialog-title>Alterar notas {{studentSubjectRecord.name}}</h1>
+    <div mat-dialog-content class="d-flex justify-content-center flex-column row-gap-2">
+        <mat-form-field>
+            <mat-label>1ª nota</mat-label>
+            <input matInput type="number" formControlName="nota1" step=".1">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>2ª nota</mat-label>
+            <input matInput type="number" formControlName="nota2" step=".1">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>3ª nota</mat-label>
+            <input matInput type="number" formControlName="nota3" step=".1">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>4ª nota</mat-label>
+            <input matInput type="number" formControlName="nota4" step=".1">
+        </mat-form-field>
+            <mat-checkbox formControlName="fecharNotas">Fechar notas dessa matéria</mat-checkbox>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button (click)="btnClose()">Cancelar</button>
+        <button mat-button type="submit" color="primary" cdkFocusInitial>Salvar</button>
+    </div>
+</form>

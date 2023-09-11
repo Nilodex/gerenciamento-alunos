@@ -1,0 +1,33 @@
+<form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>Adicionar aluno</h1>
+  <div mat-dialog-content class="d-flex justify-content-center flex-column row-gap-2">
+    <p>Preencha os dados abaixo</p>
+    <mat-form-field>
+      <mat-label>Nome Completo</mat-label>
+      <input matInput type="text" formControlName="nome">
+      <mat-error *ngIf="addForm.controls['nome'].errors" class="text-danger">Este campo não pode ficar vazio.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Telefone</mat-label>
+      <input matInput mask="(00) 0000-0000 || (00) 0 0000-0000" formControlName="telefone">
+      <mat-error *ngIf="addForm.controls['telefone'].errors" class="text-danger">Número de telefone inválido.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Data de Nascimento</mat-label>
+      <input matInput minlength="10" mask="d0/M0/0000" placeholder="DD/MM/YYYY" [leadZeroDateTime]="true" [dropSpecialCharacters]="false" formControlName="dataNascimento">
+      <mat-error *ngIf="addForm.controls['dataNascimento'].errors" class="text-danger">Este campo não pode ficar vazio.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Série</mat-label>
+      <mat-select formControlName="serie">
+        <mat-option disabled selected hidden>--</mat-option>
+        <mat-option *ngFor="let serie of series" [value]="serie">{{serie}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="addForm.controls['serie'].errors" class="text-danger">Este campo não pode ficar vazio.</mat-error>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+      <button mat-button (click)="btnClose()">Cancelar</button>
+      <button mat-button type="submit" color="primary" cdkFocusInitial>Adicionar</button>
+  </div>
+</form>

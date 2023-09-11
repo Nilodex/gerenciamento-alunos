@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Remover estudante</h1>
+<div mat-dialog-content>
+  Tem certeza que deseja remover o estudante {{student.name}}?
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button (click)="deleteStudent(student)">Excluir</button>
+</div>

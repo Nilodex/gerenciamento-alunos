@@ -1,7 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { LoginComponent } from './pages/login/login.component';
+import { StudentsComponent } from './pages/students/students.component';
+import { StudentProfileComponent } from './pages/student-profile/student-profile.component';
+import { AuthGuardService } from './shared/auth-guard.service';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {path:'home', component: HomeComponent, canActivate:[AuthGuardService]},
+  {path:'login', component: LoginComponent},
+  {path:'alunos', component: StudentsComponent},
+  {path:'alunos/profile/:id', component: StudentProfileComponent, canActivate:[AuthGuardService]},
+  {path:'', redirectTo: 'alunos', pathMatch: 'full'}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

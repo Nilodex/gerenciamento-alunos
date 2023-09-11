@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+    <button (click)="showDrawer()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Gerenciamento Escolar</span>
+    <span class="example-spacer"></span>
+    <button mat-button *ngIf="usuarioLogado" [matMenuTriggerFor]="menu">Olá {{usuarioLogado}} <mat-icon>expand_more</mat-icon></button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="btnSair()"><mat-icon>login</mat-icon> Sair</button>
+    </mat-menu>
+</mat-toolbar>

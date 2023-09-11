@@ -1,0 +1,10 @@
+.footer-container{
+    width: 100%;
+    padding-top:5px;
+    padding-bottom:5px;
+    background-color: red;
+}
+
+.footer-text{
+    color:white;
+}

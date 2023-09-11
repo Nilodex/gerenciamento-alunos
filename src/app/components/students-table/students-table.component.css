@@ -1,0 +1,9 @@
+.table-students-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+  
+.table-students-row:hover .mat-mdc-cell {
+  background-color: aliceblue;
+}
