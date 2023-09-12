@@ -1,5 +1,11 @@
 # GerenciamentoAlunos
 
+Uma aplicação web para gerenciamento de alunos desenvolvido no Angular durante o feriadão.
+Minha segunda experiência com o Framework e o Typescript. Verboso? Sim, mas gostoso de mexer.
+Pretendo continuar refinando esse projeto e incluir uma API para o mesmo.
+
+----------------
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.5.
 
 ## Development server
