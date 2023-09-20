@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
 import { StudentService } from 'src/app/shared/student.service';
 
@@ -7,12 +7,16 @@ import { StudentService } from 'src/app/shared/student.service';
   templateUrl: './dashboard-painel.component.html',
   styleUrls: ['./dashboard-painel.component.css']
 })
-export class DashboardPainelComponent implements OnInit {
+export class DashboardPainelComponent implements OnInit, OnDestroy {
+  updateStudentSub:any;
+  myChart!:Chart;
   @ViewChild("myCanvas", { static: true}) elemento!: ElementRef;
   constructor(private studentService: StudentService){}
 
-  ngOnInit(): void {
-    let myChart = new Chart(this.elemento.nativeElement, {
+  //TO-DO evitar repetições de código, ter um único componente que controle ambos os charts
+
+  createChart(){
+    this.myChart = new Chart(this.elemento.nativeElement, {
       type: 'bar',
       data: {
         labels: ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano', '6º ano', '7º ano', '8º ano', '9º ano'],
@@ -36,6 +40,22 @@ export class DashboardPainelComponent implements OnInit {
         ]
       }
     });
+  }
+
+  destroyChart(){
+    this.myChart.destroy();
+  }
+
+  ngOnInit(): void {
+    this.createChart();
+    this.updateStudentSub = this.studentService.onUpdate$.subscribe(() =>{
+      this.destroyChart();
+      this.createChart();
+    })
+  }
+
+  ngOnDestroy(): void{
+    this.updateStudentSub.unsubscribe();
   }
 
 }
