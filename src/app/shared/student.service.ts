@@ -204,6 +204,7 @@ export class StudentService {
   }
 
   init():void{
+    this.dataSource.pop();
     // Preenchimento da array com 10 alunos aleatórios
     for(let i:number = 1; i <= 10 ; i++){ //loop alunos
       let notas:number[][] = [];
@@ -288,5 +289,6 @@ export class StudentService {
         }
       );
     }
+    this.onUpdate$.emit();
   }
 }
