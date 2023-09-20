@@ -37,6 +37,11 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import { SearchStudentComponent } from './components/search-student/search-student.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { NgChartsModule } from 'ng2-charts';
+import { DashboardPainelComponent } from './components/dashboard-painel/dashboard-painel.component';
+import { DashPainelSituacaoComponent } from './components/dash-painel-situacao/dash-painel-situacao.component';
 
 
 
@@ -59,6 +64,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     RecordsPanelComponent,
     EditGradeDialogComponent,
     SearchStudentComponent,
+    DashboardComponent,
+    DashboardPainelComponent,
+    DashPainelSituacaoComponent
   ],
   imports: [
     BrowserModule,
@@ -84,6 +92,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatPaginatorModule,
     MatSortModule,
     MatSnackBarModule,
+    MatGridListModule,
+    NgChartsModule
   ],
   providers: [provideNgxMask(), AuthGuardService],
   bootstrap: [AppComponent]
