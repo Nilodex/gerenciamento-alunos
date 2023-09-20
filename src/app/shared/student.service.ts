@@ -3,6 +3,7 @@ import { StudentModel } from '../models/students.model';
 import { SubjectRecordModel } from '../models/subject-record.model';
 import { Series } from '../enums/serie.enums';
 import { parse } from 'date-fns';
+import { Subjects } from '../enums/subjects.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -115,7 +116,43 @@ export class StudentService {
     }
     console.log(this.dataSource[studentIndex].records[recordIndex]);
     this.dataSource = Array.from(this.dataSource);
-    this.onUpdate$.emit();
+  }
+
+  countStudentsFromSerie(serie: string):number{
+    const qtdAlunos = this.dataSource.filter(aluno => aluno.serie == Series[serie as keyof typeof Series]).length;
+    console.log(serie + ' = ' + qtdAlunos);
+    return qtdAlunos;
+  }
+
+  //passa a situação geral (aprovado ou reprovado) de todos os alunos por materia.
+  //situações indefinidas são ignoradas
+  countSituationFromEachSubject():any[]{
+    let situations = [
+      {nomeMateria: Subjects.portugues, qtdAprovados: 0, qtdReprovados: 0, qtdIndefinidos: 0 },
+      {nomeMateria: Subjects.matematica, qtdAprovados: 0, qtdReprovados: 0, qtdIndefinidos: 0 },
+      {nomeMateria: Subjects.historia, qtdAprovados: 0, qtdReprovados: 0, qtdIndefinidos: 0 },
+      {nomeMateria: Subjects.geografia, qtdAprovados: 0, qtdReprovados: 0, qtdIndefinidos: 0 },
+      {nomeMateria: Subjects.ciencias, qtdAprovados: 0, qtdReprovados: 0, qtdIndefinidos: 0 },
+      {nomeMateria: Subjects.informatica, qtdAprovados: 0, qtdReprovados: 0, qtdIndefinidos: 0 },
+      {nomeMateria: Subjects.ingles, qtdAprovados: 0, qtdReprovados: 0, qtdIndefinidos: 0 },
+    ];
+    this.dataSource.forEach(aluno => { //para cada aluno
+      aluno.records.forEach(record => { //para cada boletim de uma materia de um aluno
+        const situationIndex = situations.findIndex((item) => item.nomeMateria==record.name);
+        let qtdAprovados:number = situations[situationIndex].qtdAprovados;
+        let qtdReprovados:number = situations[situationIndex].qtdReprovados;
+        let qtdIndefinidos:number = situations[situationIndex].qtdIndefinidos;
+        situations[situationIndex] = 
+        {
+          nomeMateria: situations[situationIndex].nomeMateria,
+          qtdAprovados: record.approved == true ? ++qtdAprovados : qtdAprovados,
+          qtdReprovados: record.approved == false ? ++qtdReprovados : qtdReprovados,
+          qtdIndefinidos: record.approved == undefined ? ++qtdIndefinidos : qtdIndefinidos
+        }
+      });
+    });
+    console.log(situations);
+    return situations;
   }
 
 
@@ -141,14 +178,41 @@ export class StudentService {
 
   //função para gerar uma série aleatória
   getRandomSerie():string {
-    const randomNumber:number = Math.floor(Math.random() * (9 - 1) + 1); //gera um número entre 1 e 9
+    const randomNumber:number = Math.floor(Math.random() * (10 - 1) + 1); //gera um número entre 1 e 9
     let randomSerie:string = "ano" + randomNumber.toString(); //converte o número para string e concatena com ano, gerando uma string entre ano1 até ano9
     return randomSerie;
   }
 
+  getRandomGrade(): number {
+    const randomGrade = Math.random()*11; //gera uma nota flutuante entre 0 e 11 (11 excluso)
+    if(randomGrade >= 10){
+      return Math.floor(randomGrade); //se a nota for maior que 10 (ex 10,5), retorna 10
+    }
+    return Math.round(randomGrade * 10)/10 //caso contrário retorna a nota com 1 casa decimal
+  }
+
+  //função para gerar uma situação para o aluno.
+  getRandomSituation(averageGrade:number): undefined | boolean{
+    const notasEncerradas = (Math.random() < 0.5); //50% de chance de gerar nota encerrada
+    if(notasEncerradas){
+      if(averageGrade >= 7){
+        return true; //se a nota for maior que 7, aprovado
+      }
+      return false; //caso contrário, recuperação
+    }
+    return; //se as notas não foram encerradas, situação indefinida.
+  }
+
   init():void{
     // Preenchimento da array com 10 alunos aleatórios
-    for(let i:number = 1; i <= 10 ; i++){
+    for(let i:number = 1; i <= 10 ; i++){ //loop alunos
+      let notas:number[][] = [];
+      for(let j = 0; j <= 6; j++){ //loop para materias
+        notas[j] = [];
+        for(let k = 0; k <= 3; k++){ //loop para notas
+          notas[j][k] = this.getRandomGrade();
+        }
+      }
       this.dataSource.push(
         {
           id: i,
@@ -157,16 +221,72 @@ export class StudentService {
           dataNascimento: this.getRandomDate(),
           serie: Series[this.getRandomSerie() as keyof typeof Series], //um workaround para utilizar a string como chave de series enum
           records: [
-            new SubjectRecordModel(i, 'Português'),
-            new SubjectRecordModel(i, 'Matemática'),
-            new SubjectRecordModel(i, 'História'),
-            new SubjectRecordModel(i, 'Geografia'),
-            new SubjectRecordModel(i, 'Ciências'),
-            new SubjectRecordModel(i, 'Inglês'),
-            new SubjectRecordModel(i, 'Informática')
+            new SubjectRecordModel(
+              i, //id do aluno
+              Subjects.portugues, //materia
+              notas[0][0],  //nota 1
+              notas[0][1],  //nota 2
+              notas[0][2],  //nota 3
+              notas[0][3],  //nota 4
+              this.getRandomSituation((notas[0][0]+notas[0][1]+notas[0][2]+notas[0][3])/4), //situação = aprovado, em recuperação ou indefinido
+            ),
+            new SubjectRecordModel(
+              i, 
+              Subjects.matematica,
+              notas[1][0],
+              notas[1][1],
+              notas[1][2],
+              notas[1][3],
+              this.getRandomSituation((notas[1][0]+notas[1][1]+notas[1][2]+notas[1][3])/4),
+            ),
+            new SubjectRecordModel(
+              i, 
+              Subjects.historia,
+              notas[2][0],
+              notas[2][1],
+              notas[2][2],
+              notas[2][3],
+              this.getRandomSituation((notas[2][0]+notas[2][1]+notas[2][2]+notas[2][3])/4),
+            ),
+            new SubjectRecordModel(
+              i, 
+              Subjects.geografia,
+              notas[3][0],
+              notas[3][1],
+              notas[3][2],
+              notas[3][3],
+              this.getRandomSituation((notas[3][0]+notas[3][1]+notas[3][2]+notas[3][3])/4),
+            ),
+            new SubjectRecordModel(
+              i, 
+              Subjects.ciencias,
+              notas[4][0],
+              notas[4][1],
+              notas[4][2],
+              notas[4][3],
+              this.getRandomSituation((notas[4][0]+notas[4][1]+notas[4][2]+notas[4][3])/4),
+            ),
+            new SubjectRecordModel(
+              i,
+              Subjects.ingles,
+              notas[5][0],
+              notas[5][1],
+              notas[5][2],
+              notas[5][3],
+              this.getRandomSituation((notas[5][0]+notas[5][1]+notas[5][2]+notas[5][3])/4),
+            ),
+            new SubjectRecordModel(
+              i, 
+              Subjects.informatica,
+              notas[6][0],
+              notas[6][1],
+              notas[6][2],
+              notas[6][3],
+              this.getRandomSituation((notas[6][0]+notas[6][1]+notas[6][2]+notas[6][3])/4),
+            )
           ]
         }
-      )
+      );
     }
   }
 }
