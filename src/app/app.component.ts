@@ -10,8 +10,11 @@ import { SharedService } from './shared/shared.service';
 export class AppComponent implements OnInit{
   title = 'gerenciamento-alunos';
   isAuth:boolean = false;
-
   constructor(private studentService: StudentService, private shared: SharedService){}
+
+  reiniciarDados(){
+    this.studentService.init();
+  }
 
   ngOnInit(){
     //escuta a variavel username caso ocorra mudança

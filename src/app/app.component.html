@@ -5,6 +5,7 @@
     <mat-sidenav #drawer mode="side">
       <mat-nav-list>
         <mat-list-item routerLink="home" (click)="drawer.toggle()" *ngIf="isAuth"><mat-icon>dashboard</mat-icon> Dashboard</mat-list-item>
+        <mat-list-item (click)="reiniciarDados()" *ngIf="isAuth"><mat-icon>restart_alt</mat-icon> Reiniciar dados</mat-list-item>
         <mat-list-item routerLink="login" (click)="drawer.toggle()" *ngIf="!isAuth"><mat-icon>login</mat-icon> Login</mat-list-item>
         <mat-list-item routerLink="alunos" (click)="drawer.toggle()" *ngIf="isAuth"><mat-icon>person</mat-icon> Alunos</mat-list-item>
         <mat-list-item (click)="drawer.toggle()" *ngIf="isAuth"><mat-icon>login</mat-icon> Sair</mat-list-item>
