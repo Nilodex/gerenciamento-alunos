@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit{
       const password = this.loginForm.controls['password'].value;
       if(username != 'admin' || password != 'admin'){
         //falha
-        this.mensagemLogin='Credenciais incorretas';
+        this.mensagemLogin='Credenciais incorretas... já tentou login: admin e senha: admin ?';
       }
       else{
         //sucesso
